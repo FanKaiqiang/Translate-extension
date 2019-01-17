@@ -6,7 +6,8 @@
   "permissions": [
     "activeTab",
     "storage",
-    "contextMenus"
+    "contextMenus",
+    "tabs"
   ],
   "background": {
     "scripts": ["background.js"],
@@ -29,6 +30,7 @@
     "default_title": "随便翻译",
     "default_popup": "popup.html"
   },
+  "options_page": "options.html",
   "icons": {
     "16": "images/get_started16.png",
     "32": "images/get_started32.png",

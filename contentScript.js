@@ -44,14 +44,26 @@ class Panel {
   }
 
   translate(raw) {
-    this.container.querySelector('.source .content').innerText = raw//将选中内容填入待翻译区
-    fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh&dt=t&q=${raw}`)
-      .then(res => res.json())
-      .then(result => {
-        this.container.querySelector('.dest .content').innerText = result[0][0][0]
-      })//谷歌的翻译API
-  }
+    let slValue = 'en'
+    let tlValue = 'zh-CN'
+    chrome.storage.sync.get(['sl', 'tl'], (result) => {//获取storage中语言设定的值
+      if (result.sl) {
+        slValue = result.sl.value
+        this.container.querySelector('.source .title').innerText = result.sl.key
+      }
+      if (result.tl) {
+        tlValue = result.tl.value
+        this.container.querySelector('.dest .title').innerText = result.tl.key
+      }
 
+      this.container.querySelector('.source .content').innerText = raw//将选中内容填入待翻译区
+      fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${slValue}&tl=${tlValue}&dt=t&q=${raw}`)
+        .then(res => res.json())
+        .then(result => {
+          this.container.querySelector('.dest .content').innerText = result[0][0][0]
+        })//谷歌的翻译API
+    })
+  }
   setPos(x, y) {//设定浮层位置并展示浮层
     this.container.style.top = y + 'px'
     this.container.style.left = x + 'px'
