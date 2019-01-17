@@ -5,8 +5,13 @@
   "manifest_version": 2,
   "permissions": [
     "activeTab",
-    "storage"
+    "storage",
+    "contextMenus"
   ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  }, 
   "content_scripts": [
     {
       "matches": [
