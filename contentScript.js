@@ -1,7 +1,9 @@
 class Panel {
   constructor() {
+    this.switch = 'off'
     this.create()
     this.bind()
+    this.listener()
   }
 
   create() {//创建浮层，并将其插入页面中
@@ -29,6 +31,18 @@ class Panel {
     }
   }
 
+  listener() {
+    chrome.runtime.onMessage.addListener(//监听消息的发送
+      (request) => {
+        this.switch = request.switch ? request.switch : null//将翻译开关状态改变
+        if (this.switch === 'off') {
+          this.container.classList.remove('show')
+        }
+      }
+    )
+
+  }
+
   translate(raw) {
     this.container.querySelector('.source .content').innerText = raw//将选中内容填入待翻译区
     fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh&dt=t&q=${raw}`)
@@ -38,19 +52,25 @@ class Panel {
       })//谷歌的翻译API
   }
 
-  setPos(x,y) {//设定浮层位置并展示浮层
+  setPos(x, y) {//设定浮层位置并展示浮层
     this.container.style.top = y + 'px'
     this.container.style.left = x + 'px'
-    this.container.classList.add('show')//
+    this.container.classList.add('show')
   }
 }
 
 let panel = new Panel()//新建实例
-// let panelSwitch = 'off'
-document.onclick = function (e) {
+chrome.storage.sync.get(['switch'], function (result) {//获取switch的storage
+  panel.switch = result.switch ? result.switch : null
+})
+
+document.onclick = function (e) {//文档点击事件
   var selectStr = window.getSelection().toString().trim()//获取选中的值并去除前后空格 
-  if (selectStr === '') return//如果此次点击没有选中就不开启浮层
-  // if(panelSwitch === 'off') return
-  panel.translate(selectStr)//翻译
-  panel.setPos(e.clientX,e.clientY)//展示浮层
+  if (selectStr === '' || panel.switch === 'off') return
+  panel.translate(selectStr)
+  panel.setPos(e.clientX, e.clientY)
 }
+
+document.addEventListener('visibilitychange', function () { //浏览器切换事件
+  chrome.storage.sync.set({ 'switch': panel.switch })//将value作为switch的storage存放
+})
