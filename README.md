@@ -1,4 +1,4 @@
-**Franko Translate - 开启你的划词翻译之旅吧！**
+**Franko Translate - 开启你的划词翻译之旅吧！**<a href="https://github.com/FanKaiqiang/Translate-extension/raw/master/Extensions.zip" download="划词翻译插件">（点我下载）</a>
 
 ## Franko Translate
 ### 一、项目介绍
