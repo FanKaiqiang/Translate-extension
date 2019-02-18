@@ -10,11 +10,11 @@ class Panel {
     let html = `<div class="_panel_header">Franko Translate <span class="close">X</span></div>
     <div class="_panel_main">
       <div class="source">
-        <div class="title">英语</div>
+        <div class="title">English</div>
         <div class="content"></div>
       </div>
       <div class="dest">
-        <div class="title">简体中文</div>
+        <div class="title">中文</div>
         <div class="content">...</div>
       </div>
     </div>`
@@ -74,7 +74,7 @@ class Panel {
 
 let panel = new Panel()//新建实例
 chrome.storage.sync.get(['switch'], function (result) {//获取switch的storage
-  panel.switch = result.switch ? result.switch : null
+  panel.switch = result.switch ? result.switch : 'off'
 })
 
 document.onclick = function (e) {//文档点击事件
@@ -86,9 +86,6 @@ document.onclick = function (e) {//文档点击事件
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    console.log(sender.tab ?
-                "from a content script:" + sender.tab.url :
-                "from the extension");
     if (request.switch) {
     	panelSwitch = request.switch
       sendResponse('ok')
