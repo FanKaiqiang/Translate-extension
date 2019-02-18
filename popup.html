@@ -1,22 +1,71 @@
 <!doctype html>
+
 <head>
 	<meta charset="utf-8">
 	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
 		.container {
-			width: 200px;
+			display: flex;
+			width: 300px;
 			padding: 0 20px;
-		}		
+			height: 40px;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.title{
+			font-weight: bold;
+		}
+		.container:hover{
+			background: #eee;
+		}
+		select {
+			width: 80px;
+			height: 20px;
+		}
 	</style>
 </head>
+
 <body>
+
+	<div class="container title">Franko Translate - 开启你的划词翻译之旅吧！</div>
+	<hr>
 	<div class="container">
-		<h4>Translator Switch</h4>
+		<h4>翻译开关</h4>
 		<select id="select">
-			<option value="on">on</option>
-			<option value="off" selected>off</option>
+			<option value="on">开启</option>
+			<option value="off" selected>关闭</option>
 		</select>
-		<p><a  target="_blank" href="options.html">Setting</a></p>
 	</div>
-	
+	<div class="container">
+		<h4>检测语言</h4>
+		<select id="from">
+			<option value="zh-CN" data-key="中文">中文</option>
+			<option value="en" selected data-key="English">英语</option>
+			<option value="ja" data-key="日本語">日语</option>
+			<option value="fr" data-key="Français">法语</option>
+			<option value="de" data-key="Deutsch">德语</option>
+			<option value="ru" data-key="русский язык">俄语</option>
+			<option value="es" data-key="Español">西语</option>
+			<option value="ar" data-key="العربية">阿语</option>
+		</select>
+	</div>
+	<div class="container">
+		<h4>翻译为</h4>
+		<select id="to">
+			<option value="zh-CN" data-key="中文">中文</option>
+			<option value="en" selected data-key="English">英语</option>
+			<option value="ja" data-key="日本語">日语</option>
+			<option value="fr" data-key="Français">法语</option>
+			<option value="de" data-key="Deutsch">德语</option>
+			<option value="ru" data-key="русский язык">俄语</option>
+			<option value="es" data-key="Español">西语</option>
+			<option value="ar" data-key="العربية">阿语</option>
+		</select>
+	</div>
 	<script src="popup.js"></script>
 </body>

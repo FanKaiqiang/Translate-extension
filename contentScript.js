@@ -7,7 +7,7 @@ class Panel {
   }
 
   create() {//创建浮层，并将其插入页面中
-    let html = `<div class="_panel_header">小谷翻译 <span class="close">X</span></div>
+    let html = `<div class="_panel_header">Franko Translate <span class="close">X</span></div>
     <div class="_panel_main">
       <div class="source">
         <div class="title">英语</div>
@@ -26,7 +26,8 @@ class Panel {
   }
 
   bind() {//为浮层的点击按钮绑定点击事件
-    this.container.querySelector('.close').onclick = () => {
+    this.container.querySelector('.close').onclick = (e) => {
+      e.stopPropagation()
       this.container.classList.remove('show')
     }
   }
@@ -77,12 +78,22 @@ chrome.storage.sync.get(['switch'], function (result) {//获取switch的storage
 })
 
 document.onclick = function (e) {//文档点击事件
-  var selectStr = window.getSelection().toString().trim()//获取选中的值并去除前后空格 
+  var selectStr = window.getSelection().toString().trim()//获取选中的值并去除前后空格  
   if (selectStr === '' || panel.switch === 'off') return
   panel.translate(selectStr)
   panel.setPos(e.clientX, e.clientY)
 }
 
-document.addEventListener('visibilitychange', function () { //浏览器切换事件
-  chrome.storage.sync.set({ 'switch': panel.switch })//将value作为switch的storage存放
-})
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    console.log(sender.tab ?
+                "from a content script:" + sender.tab.url :
+                "from the extension");
+    if (request.switch) {
+    	panelSwitch = request.switch
+      sendResponse('ok')
+    }
+  })
+// document.addEventListener('visibilitychange', function () { //浏览器切换事件
+//   chrome.storage.sync.set({ 'switch': panel.switch })//将value作为switch的storage存放
+// })
